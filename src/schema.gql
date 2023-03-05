@@ -111,8 +111,8 @@ type Mutation {
   sendConfiremationEmail(sendCodeInput: SendCodeInput!): SendDate
   sendResetPasswordEmail(email: String!): Message
   setBalance(balanceInput: BalanceInput!): Balance!
-  signIn(signinInput: SigninInput!): Message
-  signInWithGoogle(credential: String!): Message
+  signIn(signinInput: SigninInput!): Token
+  signInWithGoogle(credential: String!): Token
   signOut: Message
   signUp(signupInput: SignupInput!): Message
   updateUser(updateUserInput: UpdateUserInput!): User!

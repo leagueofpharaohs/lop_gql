@@ -33,7 +33,7 @@ export class AuthResolver {
   }
 
   @UseGuards(LocalGuard)
-  @Mutation(() => Message, {
+  @Mutation(() => Token, {
     name: 'signIn',
     nullable: true,
   })
@@ -42,7 +42,7 @@ export class AuthResolver {
   }
 
   @UseGuards(GoogleGuard)
-  @Mutation(() => Message, { name: 'signInWithGoogle', nullable: true })
+  @Mutation(() => Token, { name: 'signInWithGoogle', nullable: true })
   signInWithGoogle(
     @Args('credential') credential: string,
     @Context() ctx: any,

@@ -128,13 +128,12 @@ export class AuthService {
     );
     await this.updateRTHash(user.id, tokens.refreshToken);
 
-    res.cookie('_rt', tokens.refreshToken, {
-      secure: true,
-    });
-    res.cookie('_at', tokens.accessToken, {
-      secure: true,
-    });
-    return { message: 'login success' };
+    const returnValues = {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    };
+
+    return returnValues;
   }
 
   //*isUserExists method
