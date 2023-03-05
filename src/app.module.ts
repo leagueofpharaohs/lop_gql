@@ -15,7 +15,7 @@ import { BalanceModule } from './balance/balance.module';
     RedisModule.forRootAsync({
       useFactory: () => ({
         config: {
-          url: process.env.REDIS_URL,
+          url: process.env.REDIS_URL.toString(),
         },
       }),
     }),
