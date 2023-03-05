@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  AFFILIATE
+}
+
+enum BuyPhase {
+  ICO
+  PRE_SALE
+  PUBLIC_SALE
+  PRIVATE_SALE
+  IDO
+  NO_PHASE
+}
+
+enum Status {
+  LINEAR_VESTING
+  CLIFF_VESTING
+  NO_VESTING
+  LOCKED
+  NORMAL
+}
+
+enum WithdrawalStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+  IN_PROGRESS
+  ERROR
+}
+
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  email           String   @unique
+  fullName        String?  @default("")
+  usedName        String?
+  birthDate       String?  @default("0")
+  password        String?  @default("")
+  isEmailVerified Boolean  @default(false)
+  avatar          String?  @default("")
+  role            Role[]   @default([USER])
+  referralCode    String?  @default("")
+  account         Account?
+  balance         Balance?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Account {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  provider   String
+  type       String
+  providerId String
+  hashRT     String? @default("")
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String  @unique @db.ObjectId
+}
+
+model Balance {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  totalLocked   String      @default("0")
+  totalUnlocked String      @default("0")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String      @unique @db.ObjectId
+  buy           Buy?
+  bonus         Bonus?
+  withdrawal    Withdrawal?
+}
+
+model Buy {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  totalToken String
+  buyToken   BuyToken[]
+  balance    Balance    @relation(fields: [balanceId], references: [id], onDelete: Cascade)
+  balanceId  String     @unique @db.ObjectId
+}
+
+model BuyToken {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  currencyUsed  String
+  currencyprice String
+  amount        String
+  tokenUnits    String
+  tokenPrice    String
+  wallet        String
+  buyPhase      BuyPhase @default(NO_PHASE)
+  status        Status   @default(NORMAL)
+  buy           Buy      @relation(fields: [buyId], references: [id], onDelete: Cascade)
+  buyId         String   @db.ObjectId
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Bonus {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  totalBonus String
+  bonusToken BonusToken[]
+  balance    Balance      @relation(fields: [balanceId], references: [id])
+  balanceId  String       @unique @db.ObjectId
+}
+
+model BonusToken {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  bonusType   String
+  tokenUnits  String
+  tokenStatus Status   @default(NORMAL)
+  bonus       Bonus    @relation(fields: [bonusId], references: [id])
+  bonusId     String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Withdrawal {
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  totalWithdrawal String
+  WithdrawalToken WithdrawalToken[]
+  balance         Balance           @relation(fields: [balanceId], references: [id])
+  balanceId       String            @unique @db.ObjectId
+}
+
+model WithdrawalToken {
+  id               String           @id @default(auto()) @map("_id") @db.ObjectId
+  withdrawalMethod String
+  tokenUnits       String
+  wallet           String
+  status           WithdrawalStatus @default(PENDING)
+  withdrawal       Withdrawal       @relation(fields: [withdrawalId], references: [id])
+  withdrawalId     String           @db.ObjectId
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}

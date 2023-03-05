@@ -1,0 +1,263 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Account {
+  id: ID!
+  provider: String!
+  providerId: String!
+  refreshTokenHash: String
+  type: String!
+}
+
+type Balance {
+  bonus: Bonus!
+  buy: Buy!
+  id: ID!
+  totalLocked: String!
+  totalUnlocked: String!
+  withdrawal: Withdrawal!
+}
+
+input BalanceInput {
+  bonus: bonusInput!
+  buy: BuyInput!
+  totalLocked: String!
+  totalUnlocked: String!
+  userId: String!
+  withdrawal: WithdrawalInput!
+}
+
+type Bonus {
+  bonusToken: [BonusToken!]
+  id: ID!
+  totlaBonus: String!
+}
+
+type BonusToken {
+  bonusType: String!
+  createdAt: DateTime!
+  id: ID!
+  tokenStatus: String!
+  tokenUnits: String!
+  updatedAt: DateTime!
+}
+
+type Buy {
+  buyToken: [BuyToken!]
+  id: ID!
+  totalToken: String!
+}
+
+input BuyInput {
+  buyToken: [NewBuyInput!]!
+  totalToken: String!
+}
+
+type BuyToken {
+  amount: String!
+  buyPhase: String!
+  createdAt: DateTime!
+  currencyUsed: String!
+  currencyprice: String!
+  id: ID!
+  status: String!
+  tokenPrice: String!
+  tokenUnits: String!
+  updatedAt: DateTime!
+  wallet: String!
+}
+
+type BuyTokenReturn {
+  amount: String!
+  buyPhase: String!
+  createdAt: DateTime!
+  currencyUsed: String!
+  currencyprice: String!
+  id: ID!
+  status: String!
+  tokenPrice: String!
+  tokenUnits: String!
+  updatedAt: DateTime!
+}
+
+type ConfirmEmail {
+  isValide: Boolean!
+  message: String!
+}
+
+input ConfirmEmailInput {
+  code: String!
+  confiremStep: String!
+  email: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Message {
+  message: String!
+}
+
+type Mutation {
+  buyToken(buyInput: UpdateBalanceInput!): ReturnBuy!
+  confirmEmail(confirmEmailInput: ConfirmEmailInput!): ConfirmEmail
+  deleteUser: User!
+  isUserExists(email: String!): Boolean
+  refreshToken: Token
+  resetPassword(resetPassword: ResetPasswordInput!): Message
+  sendConfiremationEmail(sendCodeInput: SendCodeInput!): SendDate
+  sendResetPasswordEmail(email: String!): Message
+  setBalance(balanceInput: BalanceInput!): Balance!
+  signIn(signinInput: SigninInput!): Message
+  signInWithGoogle(credential: String!): Message
+  signOut: Message
+  signUp(signupInput: SignupInput!): Message
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}
+
+input NewBonusInput {
+  bonusId: String!
+  bonusType: String!
+  tokenStatus: String
+  tokenUnits: String!
+}
+
+input NewBuyInput {
+  amount: String!
+  buyId: String!
+  buyPhase: String
+  currencyUsed: String!
+  currencyprice: String!
+  status: String
+  tokenPrice: String!
+  tokenUnits: String!
+  wallet: String!
+}
+
+input NewWithdrawalInput {
+  status: String
+  tokenUnits: String!
+  wallet: String!
+  withdrawalId: String!
+  withdrawalMethod: String!
+}
+
+type Query {
+  getAllUsers: [User!]!
+  getUserById: User
+  getUserByInputId(id: String!): User
+}
+
+input ResetPasswordInput {
+  id: String!
+  password: String!
+  token: String!
+}
+
+type ReturnBuy {
+  buyToken: [BuyTokenReturn!]
+  id: ID!
+  totalLocked: String!
+  totalToken: String!
+  totalUnlocked: String!
+}
+
+"""User Role"""
+enum Role {
+  ADMIN
+  AFFILIATE
+  USER
+}
+
+input SendCodeInput {
+  email: String!
+}
+
+type SendDate {
+  codeLength: Float!
+  sendDate: String!
+}
+
+input SigninInput {
+  email: String!
+  password: String!
+}
+
+input SignupInput {
+  birthDate: String!
+  email: String!
+  fullName: String!
+  isEmailVerified: Boolean!
+  password: String!
+}
+
+type Token {
+  accessToken: String!
+  refreshToken: String!
+}
+
+input UpdateBalanceInput {
+  amount: String!
+  balanceId: String!
+  buyPhase: String!
+  currencyUsed: String!
+  currencyprice: String!
+  status: String!
+  tokenPrice: String!
+  tokenUnits: String!
+  wallet: String!
+}
+
+input UpdateUserInput {
+  email: String
+  fullName: String
+  id: ID!
+  isEmailVerified: Boolean
+  password: String
+}
+
+type User {
+  account: Account!
+  avatar: String!
+  balance: Balance!
+  birthDate: Float!
+  createdAt: DateTime!
+  email: String!
+  fullName: String!
+  id: ID!
+  isEmailVerified: Boolean!
+  password: String!
+  referralCode: String!
+  role: [Role!]!
+  updatedAt: DateTime!
+  usedName: String
+}
+
+type Withdrawal {
+  WithdrawalToken: [WithdrawalToken!]
+  id: ID!
+  totalWithdrawal: String!
+}
+
+input WithdrawalInput {
+  WithdrawalToken: [NewWithdrawalInput!]!
+  totalWithdrawal: String!
+}
+
+type WithdrawalToken {
+  createdAt: DateTime!
+  id: ID!
+  status: String!
+  tokenUnits: String!
+  updatedAt: DateTime!
+  wallet: String!
+  withdrawalMethod: String!
+}
+
+input bonusInput {
+  bonusToken: [NewBonusInput!]!
+  totalBonus: String!
+}
