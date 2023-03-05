@@ -128,8 +128,12 @@ export class AuthService {
     );
     await this.updateRTHash(user.id, tokens.refreshToken);
 
-    res.cookie('_rt', tokens.refreshToken);
-    res.cookie('_at', tokens.accessToken);
+    res.cookie('_rt', tokens.refreshToken, {
+      secure: true,
+    });
+    res.cookie('_at', tokens.accessToken, {
+      secure: true,
+    });
     return { message: 'login success' };
   }
 
