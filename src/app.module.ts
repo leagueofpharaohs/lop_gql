@@ -15,10 +15,7 @@ import { BalanceModule } from './balance/balance.module';
     RedisModule.forRootAsync({
       useFactory: () => ({
         config: {
-          host: process.env.REDIS_HOST,
-          port: Number(process.env.REDIS_PORT),
-          password: process.env.REDIS_PASSWORD,
-          username: process.env.REDIS_USERNAME,
+          url: process.env.REDIS_URL,
         },
       }),
     }),
