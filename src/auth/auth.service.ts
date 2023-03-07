@@ -129,13 +129,11 @@ export class AuthService {
     await this.updateRTHash(user.id, tokens.refreshToken);
 
     res.cookie('_at', tokens.accessToken, {
-      httpOnly: true,
       secure: true,
       sameSite: 'none',
     });
 
     res.cookie('_rt', tokens.refreshToken, {
-      httpOnly: true,
       secure: true,
       sameSite: 'none',
     });
