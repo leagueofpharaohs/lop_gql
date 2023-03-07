@@ -128,15 +128,6 @@ export class AuthService {
     );
     await this.updateRTHash(user.id, tokens.refreshToken);
 
-    res.cookie('_at', tokens.accessToken, {
-      secure: true,
-      sameSite: 'none',
-    });
-
-    res.cookie('_rt', tokens.refreshToken, {
-      secure: true,
-      sameSite: 'none',
-    });
     const returnValues = {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
