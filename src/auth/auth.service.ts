@@ -131,11 +131,13 @@ export class AuthService {
     res.cookie('_at', tokens.accessToken, {
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
     });
 
     res.cookie('_rt', tokens.refreshToken, {
       httpOnly: true,
       secure: true,
+      sameSite: 'none',
     });
     const returnValues = {
       accessToken: tokens.accessToken,
