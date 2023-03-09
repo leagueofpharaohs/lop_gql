@@ -8,11 +8,7 @@ import { Request } from 'express';
 export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => {
-          return request?.cookies['_at'];
-        },
-      ]),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: process.env.AT_SECRET,
     });
